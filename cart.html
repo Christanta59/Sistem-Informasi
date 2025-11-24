@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Aurora Apparel — Cart</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <header class="bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold">AA</div>
+        <div>
+          <h1 class="text-xl font-semibold">Aurora Apparel</h1>
+        </div>
+      </a>
+      <nav class="flex items-center gap-4">
+        <a href="index.html" class="text-sm font-medium">Home</a>
+        <a href="cart.html" class="text-sm font-medium">Cart</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-10">
+    <div class="bg-white p-6 rounded-2xl shadow">
+      <h2 class="text-xl font-semibold mb-4">Shopping Cart</h2>
+      <div id="cart-list" class="space-y-4">
+        <!-- cart items injected by JS -->
+      </div>
+
+      <div class="mt-6 flex justify-between items-center">
+        <div class="text-lg">Total: <span id="cart-total">Rp0</span></div>
+        <div class="flex gap-3">
+          <a href="index.html" class="px-4 py-2 border rounded-md">Continue Shopping</a>
+          <a id="checkout-btn" href="checkout.html" class="px-4 py-2 bg-indigo-600 text-white rounded-md">Proceed to Checkout</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+      App.renderCart();
+      App.updateNavCartCount();
+    });
+  </script>
+</body>
+</html>
