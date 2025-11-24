@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Aurora Apparel — Checkout</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <header class="bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold">AA</div>
+        <div>
+          <h1 class="text-xl font-semibold">Aurora Apparel</h1>
+        </div>
+      </a>
+      <nav class="flex items-center gap-4">
+        <a href="index.html" class="text-sm font-medium">Home</a>
+        <a href="cart.html" class="text-sm font-medium">Cart</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-10">
+    <div class="bg-white p-6 rounded-2xl shadow max-w-2xl mx-auto">
+      <h2 class="text-xl font-semibold mb-4">Checkout</h2>
+      <form id="checkout-form" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium">Full name</label>
+          <input required name="name" class="mt-1 block w-full border rounded-md px-3 py-2" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Phone</label>
+          <input required name="phone" class="mt-1 block w-full border rounded-md px-3 py-2" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Address</label>
+          <textarea required name="address" class="mt-1 block w-full border rounded-md px-3 py-2"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Courier</label>
+          <select required name="courier" class="mt-1 block w-full border rounded-md px-3 py-2">
+            <option value="jne">JNE</option>
+            <option value="jnt">J&T</option>
+            <option value="sicepat">SiCepat</option>
+          </select>
+        </div>
+        <div class="flex justify-between items-center">
+          <div>Total: <span id="checkout-total">Rp0</span></div>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md">Pay (Mock)</button>
+        </div>
+      </form>
+
+      <div id="checkout-result" class="mt-6 hidden bg-green-50 border border-green-100 p-4 rounded">
+        <p class="font-semibold">Order created! <span id="order-id"></span></p>
+        <p class="text-sm">Use the order id to track your order on the Track Order page.</p>
+        <div class="mt-3"><a id="go-to-order" class="text-indigo-600 font-medium">Track order</a></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+      App.initCheckout();
+      App.updateNavCartCount();
+    });
+  </script>
+</body>
+</html>
