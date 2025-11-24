@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Aurora Apparel — Product</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <header class="bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold">AA</div>
+        <div>
+          <h1 class="text-xl font-semibold">Aurora Apparel</h1>
+        </div>
+      </a>
+      <nav class="flex items-center gap-4">
+        <a href="index.html" class="text-sm font-medium">Home</a>
+        <a href="cart.html" class="text-sm font-medium">Cart <span id="nav-cart-count-2" class="ml-1 text-xs bg-red-500 text-white rounded-full px-2 py-0">0</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-10">
+    <div id="product-detail" class="bg-white p-8 rounded-2xl shadow">
+      <!-- populated by JS -->
+    </div>
+  </main>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+      App.initProductPage();
+      App.updateNavCartCount();
+    });
+  </script>
+</body>
+</html>
