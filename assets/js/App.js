@@ -1,4 +1,4 @@
-<script>
+
 const App = (function(){
   // Mock product database
   const PRODUCTS_KEY = 'aurora_products_v1';
@@ -257,7 +257,12 @@ const App = (function(){
         <div>
           ${order.items.map(it=>{
             const p = loadProducts().find(x=>x.id===it.id);
-            return <div class=\"flex items-center gap-3\"><img src=\"${p.img}\" class=\"w-16 h-16 object-cover rounded\"><div><div class=\"font-semibold\">${p.title}</div><div class=\"text-sm text-gray-600\">${it.size} x ${it.qty}${it.preorder? ' (Pre-order)' : ''}</div></div></div>
+            return <div class="flex items-center gap-3\">
+              <img src= "${p.img}" class= "w-16 h-16 object-cover rounded"><div>
+              <div class= "font-semibold">${p.title}</div>
+              <div class= "text-sm text-gray-600">${it.size} x ${it.qty}${it.preorder? ' (Pre-order)' : ''}</div>
+            </div>
+          </div>
           }).join('<hr class="my-3">')}
         </div>
         <div class="mt-4 text-sm text-gray-600">Courier: ${order.courier}</div>
@@ -303,11 +308,36 @@ const App = (function(){
     if(!p) return; p.stock.S = Math.max(0,p.stock.S + delta); p.stock.M = Math.max(0,p.stock.M + delta); p.stock.L = Math.max(0,p.stock.L + delta); saveProducts(products); initAdmin();
   }
   function renderAdminOrders(){
-    const orders = getOrders(); const el = document.getElementById('admin-orders'); el.innerHTML='';
-    if(orders.length===0) el.innerHTML = '<div class="text-sm text-gray-600">No orders yet.</div>';
-    orders.slice().reverse().forEach(o=>{
-      const div = document.createElement('div'); div.className='border p-3 rounded';
-      div.innerHTML = <div class=\"flex justify-between items-center\"><div><div class=\"font-semibold\">${o.id}</div><div class=\"text-sm text-gray-600\">${o.name} • ${formatIDR(o.total)}</div></div><div><select data-id=\"${o.id}\" class=\"status-select border rounded px-2 py-1 text-sm\"><option value=\"Processing\" ${o.status==='Processing'?'selected':''}>Processing</option><option value=\"Packed\" ${o.status==='Packed'?'selected':''}>Packed</option><option value=\"Shipped\" ${o.status==='Shipped'?'selected':''}>Shipped</option><option value=\"Delivered\" ${o.status==='Delivered'?'selected':''}>Delivered</option></select></div></div>;
+    const orders = getOrders(); 
+    const el = document.getElementById('admin-orders'); 
+    el.innerHTML='';
+
+    if(orders.length===0) {
+      el.innerHTML = '<div class="text-sm text-gray-600">No orders yet.</div>';
+      return;
+    }
+
+    orders.slice().reverse().forEach(o => {
+      const div = document.createElement('div'); 
+      div.className='border p-3 rounded';
+
+      div.innerHTML = `
+        <div class= "flex justify-between items-center">
+          <div>
+            <div class="font-semibold">${o.id}</div>
+            <div class="text-sm text-gray-600">${o.name} • ${formatIDR(o.total)}</div>
+        </div>
+      <div>
+        <select data-id= "${o.id}" class= "status-select border rounded px-2 py-1 text-sm">
+        <option value="Processing" ${o.status==='Processing'?'selected':''}> Processing < option>
+        <option value="Packed" ${o.status==='Packed'?'selected':''}>Packed</option>
+        <option value="Shipped" ${o.status==='Shipped'?'selected':''}>Shipped</option>
+        <option value="Delivered" ${o.status==='Delivered'?'selected':''}>Delivered</option>
+        </select>
+        </div>
+      </div>
+      `;
+
       el.appendChild(div);
     });
     document.querySelectorAll('.status-select').forEach(s=> s.addEventListener('change', ()=>{
@@ -319,4 +349,3 @@ const App = (function(){
     initCatalog, initProductPage, renderCart, initCheckout, initOrderTrack, initAdmin, sortCatalog, updateNavCartCount
   };
 })();
-</script>
