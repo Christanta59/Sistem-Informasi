@@ -258,7 +258,7 @@ const App = (function(){
           ${order.items.map(it=>{
             const p = loadProducts().find(x=>x.id===it.id);
             return <div class="flex items-center gap-3\">
-              <img src= "${p.img}" class= "w-16 h-16 object-cover rounded"><div>
+              <img src= "${p.img}" class= "w-16 h-16 object-cover rounded"/><div>
               <div class= "font-semibold">${p.title}</div>
               <div class= "text-sm text-gray-600">${it.size} x ${it.qty}${it.preorder? ' (Pre-order)' : ''}</div>
             </div>
