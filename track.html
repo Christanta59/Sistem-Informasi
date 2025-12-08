@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Aurora Apparel — Track Order</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'aa-primary': '#EC4899', // Pink-600
+            'aa-secondary': '#4F46E5', // Indigo-600
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <header class="bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold">AA</div>
+        <div>
+          <h1 class="text-xl font-semibold">Track Order — Aurora</h1>
+        </div>
+      </a>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-10">
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-xl">
+      <h2 class="text-2xl font-bold mb-6 text-center">Cek Status Pesanan Anda</h2>
+      
+      <form id="tracking-form" class="flex gap-4 mb-10">
+        <input type="text" id="order-id" placeholder="Masukkan Nomor Pesanan (Contoh: AA12345)" required
+               class="flex-grow px-4 py-3 border border-gray-300 rounded-lg focus:ring-aa-secondary focus:border-aa-secondary transition">
+        <button type="submit"
+                class="px-6 py-3 bg-aa-secondary text-white font-semibold rounded-lg hover:bg-indigo-700 transition duration-150">
+          Lacak
+        </button>
+      </form>
+
+      <div id="tracking-results" class="hidden">
+        <div class="bg-gray-100 p-4 rounded-lg mb-6">
+            <p class="text-lg font-semibold text-gray-700">Nomor Pesanan: <span id="display-order-id" class="text-aa-secondary"></span></p>
+        </div>
+        
+        <div id="status-timeline" class="space-y-6 relative">
+            <div class="absolute left-2 top-0 h-full w-0.5 bg-gray-300"></div>
+
+            </div>
+
+        <div class="mt-8 pt-6 border-t border-gray-200">
+            <h3 class="text-xl font-semibold mb-3">Detail Pengiriman</h3>
+            <p>Kurir: <span id="courier-name" class="font-medium">JNE (Reguler)</span></p>
+            <p>No. Resi: <span id="tracking-number" class="font-medium text-aa-primary">JV0012345678</span></p>
+        </div>
+
+      </div>
+
+      <div id="not-found-message" class="hidden text-center p-8 bg-red-50 border-l-4 border-red-500 rounded-lg">
+        <p class="text-red-700 font-semibold">Pesanan tidak ditemukan. Mohon periksa kembali Nomor Pesanan Anda.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // Data contoh (biasanya ini akan diambil dari server/API)
+    const mockOrderData = {
+        'AA12345': [
+            { status: 'Pesanan Dibuat', date: '2025-12-01 10:00', location: 'Website Aurora Apparel' },
+            { status: 'Pembayaran Dikonfirmasi', date: '2025-12-01 10:15', location: 'Sistem Pembayaran' },
+            { status: 'Pesanan Diproses & Dikemas', date: '2025-12-01 14:00', location: 'Gudang Jakarta' },
+            { status: 'Diserahkan ke Kurir', date: '2025-12-02 09:30', location: 'Gudang Jakarta' },
+            { status: 'Dalam Perjalanan', date: '2025-12-03 08:00', location: 'Sortir Hub Bandung' },
+            // Status terakhir (akan disorot)
+            { status: 'Tiba di Kota Tujuan', date: '2025-12-03 09:00', location: 'Transit Point Bandung' },
+        ],
+        'AA67890': [
+             { status: 'Pesanan Dibuat', date: '2025-12-03 12:00', location: 'Website Aurora Apparel' },
+        ]
+    };
+
+    document.getElementById('tracking-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const orderId = document.getElementById('order-id').value.toUpperCase();
+      const resultsDiv = document.getElementById('tracking-results');
+      const timelineDiv = document.getElementById('status-timeline');
+      const notFoundDiv = document.getElementById('not-found-message');
+
+      // Reset tampilan
+      resultsDiv.classList.add('hidden');
+      notFoundDiv.classList.add('hidden');
+      timelineDiv.innerHTML = '';
+      document.getElementById('display-order-id').textContent = orderId;
+
+      const trackingEvents = mockOrderData[orderId];
+
+      if (trackingEvents) {
+        // Tampilkan hasil
+        resultsDiv.classList.remove('hidden');
+
+        trackingEvents.forEach((event, index) => {
+          // Cek apakah ini event terakhir (terbaru)
+          const isLatest = index === trackingEvents.length - 1;
+          
+          // Class untuk titik timeline
+          const dotClass = isLatest 
+            ? 'bg-aa-primary ring-4 ring-pink-200' // Sorot status terbaru
+            : 'bg-gray-400';
+
+          // Class untuk teks status
+          const textClass = isLatest 
+            ? 'font-bold text-aa-primary' 
+            : 'text-gray-700';
+
+          // Membuat elemen status timeline
+          const item = `
+            <div class="relative pl-8">
+              <div class="absolute left-0 top-0 mt-1 w-4 h-4 rounded-full ${dotClass} border-2 border-white"></div>
+              
+              <p class="text-sm text-gray-500">${event.date.split(' ')[0]} <span class="text-xs ml-1">${event.date.split(' ')[1]}</span></p>
+              <p class="text-base ${textClass}">${event.status}</p>
+              <p class="text-sm text-gray-500 italic">${event.location}</p>
+            </div>
+          `;
+          timelineDiv.insertAdjacentHTML('beforeend', item);
+        });
+
+      } else {
+        // Tampilkan pesan tidak ditemukan
+        notFoundDiv.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
